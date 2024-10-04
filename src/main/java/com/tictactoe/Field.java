@@ -26,11 +26,49 @@ public class Field {
     }
 
     public int getEmptyFieldIndex() {
+        List<List<Integer>> winPossibilities = List.of(
+                List.of(0, 1, 2),
+                List.of(3, 4, 5),
+                List.of(6, 7, 8),
+                List.of(0, 3, 6),
+                List.of(1, 4, 7),
+                List.of(2, 5, 8),
+                List.of(0, 4, 8),
+                List.of(2, 4, 6)
+        );
+
+        // 1. Проверяем, могут ли нолики выиграть
+        for (List<Integer> winPossibility : winPossibilities) {
+            if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(1)) && field.get(winPossibility.get(1)) == Sign.NOUGHT && field.get(winPossibility.get(2)) == Sign.EMPTY) {
+                return winPossibility.get(2);  // Нолики могут выиграть, делаем ход
+            }
+            if (field.get(winPossibility.get(1)) == field.get(winPossibility.get(2)) && field.get(winPossibility.get(1)) == Sign.NOUGHT && field.get(winPossibility.get(0)) == Sign.EMPTY) {
+                return winPossibility.get(0);  // Нолики могут выиграть, делаем ход
+            }
+            if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(2)) && field.get(winPossibility.get(0)) == Sign.NOUGHT && field.get(winPossibility.get(1)) == Sign.EMPTY) {
+                return winPossibility.get(1);  // Нолики могут выиграть, делаем ход
+            }
+        }
+
+        for (List<Integer> winPossibility : winPossibilities) {
+            if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(1)) && field.get(winPossibility.get(1)) == Sign.CROSS && field.get(winPossibility.get(2)) == Sign.EMPTY) {
+                return winPossibility.get(2);
+            }
+            if (field.get(winPossibility.get(1)) == field.get(winPossibility.get(2)) && field.get(winPossibility.get(1)) == Sign.CROSS && field.get(winPossibility.get(0)) == Sign.EMPTY) {
+                return winPossibility.get(0);
+            }
+            if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(2)) && field.get(winPossibility.get(0)) == Sign.CROSS && field.get(winPossibility.get(1)) == Sign.EMPTY) {
+                return winPossibility.get(1);
+            }
+        }
+
         return field.entrySet().stream()
                 .filter(e -> e.getValue() == Sign.EMPTY)
                 .map(Map.Entry::getKey)
-                .findFirst().orElse(-1);
+                .findFirst()
+                .orElse(-1);
     }
+
 
     public List<Sign> getFieldData() {
         return field.entrySet().stream()
@@ -53,7 +91,7 @@ public class Field {
 
         for (List<Integer> winPossibility : winPossibilities) {
             if (field.get(winPossibility.get(0)) == field.get(winPossibility.get(1))
-                && field.get(winPossibility.get(0)) == field.get(winPossibility.get(2))) {
+                    && field.get(winPossibility.get(0)) == field.get(winPossibility.get(2))) {
                 return field.get(winPossibility.get(0));
             }
         }

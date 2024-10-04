@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+  app:
+    image: 'c77931588d8c'
+    container_name: app
+    ports:
+      - '8080:8080'
